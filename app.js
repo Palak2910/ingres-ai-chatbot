@@ -1,55 +1,487 @@
-/* =========================================================
-   INGRES AI FRONTEND
-========================================================= */
+/* =====================================================
+   INGRES AI
+   MAIN JAVASCRIPT
+===================================================== */
 
 
-/* =========================================================
-   LANGUAGES
-========================================================= */
+/* =====================================================
+   22 INDIAN LANGUAGES
+===================================================== */
 
 const languages = {
 
     "English": "en-IN",
 
     "Assamese": "as-IN",
+
     "Bengali": "bn-IN",
+
     "Bodo": "brx-IN",
+
     "Dogri": "doi-IN",
+
     "Gujarati": "gu-IN",
+
     "Hindi": "hi-IN",
+
     "Kannada": "kn-IN",
+
     "Kashmiri": "ks-IN",
+
     "Konkani": "kok-IN",
+
     "Maithili": "mai-IN",
+
     "Malayalam": "ml-IN",
+
     "Manipuri": "mni-IN",
+
     "Marathi": "mr-IN",
+
     "Nepali": "ne-IN",
+
     "Odia": "or-IN",
+
     "Punjabi": "pa-IN",
+
     "Sanskrit": "sa-IN",
+
     "Santali": "sat-IN",
+
     "Sindhi": "sd-IN",
+
     "Tamil": "ta-IN",
+
     "Telugu": "te-IN",
+
     "Urdu": "ur-IN"
+
 };
 
 
-/* =========================================================
-   LANDING
-========================================================= */
+/* =====================================================
+   PAGE ELEMENTS
+===================================================== */
 
-function openAssistant() {
+const landing =
+    document.getElementById("landing");
 
-    document.getElementById("landing").style.display = "none";
+const loginPage =
+    document.getElementById("login-page");
 
-    document.getElementById("assistant").style.display = "block";
+const assistant =
+    document.getElementById("assistant");
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginEmail =
+    document.getElementById("loginEmail");
+
+const loginPassword =
+    document.getElementById("loginPassword");
+
+const loginError =
+    document.getElementById("loginError");
+
+const rememberMe =
+    document.getElementById("rememberMe");
+
+const messages =
+    document.getElementById("messages");
+
+const input =
+    document.getElementById("messageInput");
+
+const languageSelect =
+    document.getElementById("languageSelect");
+
+const languageCloud =
+    document.getElementById("languageCloud");
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function openLogin() {
+
+    landing.style.display = "none";
+
+    loginPage.style.display = "block";
+
+    assistant.style.display = "none";
+
+    window.scrollTo(0, 0);
+
+    setTimeout(() => {
+
+        loginEmail.focus();
+
+    }, 200);
+
+}
+
+
+function backToLanding() {
+
+    loginPage.style.display = "none";
+
+    assistant.style.display = "none";
+
+    landing.style.display = "block";
 
     window.scrollTo(0, 0);
 
 }
 
+
+function openAssistant() {
+
+    landing.style.display = "none";
+
+    loginPage.style.display = "none";
+
+    assistant.style.display = "block";
+
+    window.scrollTo(0, 0);
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+loginForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+        const email =
+            loginEmail.value.trim();
+
+        const password =
+            loginPassword.value;
+
+
+        loginError.textContent = "";
+
+        loginError.style.color =
+            "#ff6d7d";
+
+
+        if (!email) {
+
+            loginError.textContent =
+                "Please enter your email address.";
+
+            loginEmail.focus();
+
+            return;
+
+        }
+
+
+        if (!isValidEmail(email)) {
+
+            loginError.textContent =
+                "Please enter a valid email address.";
+
+            loginEmail.focus();
+
+            return;
+
+        }
+
+
+        if (!password) {
+
+            loginError.textContent =
+                "Please enter your password.";
+
+            loginPassword.focus();
+
+            return;
+
+        }
+
+
+        if (password.length < 6) {
+
+            loginError.textContent =
+                "Password must contain at least 6 characters.";
+
+            loginPassword.focus();
+
+            return;
+
+        }
+
+
+        loginUser(email);
+
+    }
+);
+
+
+/* =====================================================
+   EMAIL VALIDATION
+===================================================== */
+
+function isValidEmail(email) {
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+
+}
+
+
+/* =====================================================
+   SUCCESSFUL LOGIN
+===================================================== */
+
+function loginUser(email) {
+
+    const user = {
+
+        email: email,
+
+        loginTime:
+            new Date().toISOString()
+
+    };
+
+
+    if (rememberMe.checked) {
+
+        localStorage.setItem(
+            "ingresUser",
+            JSON.stringify(user)
+        );
+
+    } else {
+
+        sessionStorage.setItem(
+            "ingresUser",
+            JSON.stringify(user)
+        );
+
+    }
+
+
+    loginError.style.color =
+        "#2be29d";
+
+    loginError.textContent =
+        "Login successful. Opening INGRES AI...";
+
+
+    setTimeout(() => {
+
+        loginPage.style.display =
+            "none";
+
+        landing.style.display =
+            "none";
+
+        assistant.style.display =
+            "block";
+
+        window.scrollTo(0, 0);
+
+        showWelcomeMessage();
+
+    }, 500);
+
+}
+
+
+/* =====================================================
+   PASSWORD VISIBILITY
+===================================================== */
+
+function togglePassword() {
+
+    const toggle =
+        document.getElementById(
+            "passwordToggle"
+        );
+
+
+    if (loginPassword.type === "password") {
+
+        loginPassword.type =
+            "text";
+
+        toggle.textContent =
+            "🙈";
+
+    } else {
+
+        loginPassword.type =
+            "password";
+
+        toggle.textContent =
+            "👁";
+
+    }
+
+}
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+function forgotPassword() {
+
+    const email =
+        loginEmail.value.trim();
+
+
+    if (!email) {
+
+        loginError.style.color =
+            "#ff6d7d";
+
+        loginError.textContent =
+            "Enter your email address first.";
+
+        loginEmail.focus();
+
+        return;
+
+    }
+
+
+    if (!isValidEmail(email)) {
+
+        loginError.style.color =
+            "#ff6d7d";
+
+        loginError.textContent =
+            "Please enter a valid email address.";
+
+        return;
+
+    }
+
+
+    loginError.style.color =
+        "#2be29d";
+
+    loginError.textContent =
+        "Password reset instructions would be sent to your email.";
+
+}
+
+
+/* =====================================================
+   GOOGLE LOGIN
+===================================================== */
+
+function googleLogin() {
+
+    loginError.style.color =
+        "#a7c8ff";
+
+    loginError.textContent =
+        "Google authentication will be connected here.";
+
+}
+
+
+/* =====================================================
+   SIGN UP
+===================================================== */
+
+function showSignupMessage() {
+
+    loginError.style.color =
+        "#a7c8ff";
+
+    loginError.textContent =
+        "Account registration will be connected here.";
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+    localStorage.removeItem(
+        "ingresUser"
+    );
+
+    sessionStorage.removeItem(
+        "ingresUser"
+    );
+
+
+    assistant.style.display =
+        "none";
+
+    loginPage.style.display =
+        "block";
+
+    landing.style.display =
+        "none";
+
+
+    loginEmail.value = "";
+
+    loginPassword.value = "";
+
+    loginError.textContent = "";
+
+    window.scrollTo(0, 0);
+
+}
+
+
+/* =====================================================
+   AUTO LOGIN
+===================================================== */
+
+function checkExistingLogin() {
+
+    const localUser =
+        localStorage.getItem(
+            "ingresUser"
+        );
+
+    const sessionUser =
+        sessionStorage.getItem(
+            "ingresUser"
+        );
+
+
+    if (localUser || sessionUser) {
+
+        landing.style.display =
+            "none";
+
+        loginPage.style.display =
+            "none";
+
+        assistant.style.display =
+            "block";
+
+        showWelcomeMessage();
+
+    }
+
+}
+
+
+/* =====================================================
+   LANDING HELPERS
+===================================================== */
 
 function scrollToFeatures() {
 
@@ -62,70 +494,81 @@ function scrollToFeatures() {
 }
 
 
-/* =========================================================
-   LANGUAGE SELECT
-========================================================= */
-
-const languageSelect =
-    document.getElementById("languageSelect");
-
-const languageCloud =
-    document.getElementById("languageCloud");
-
+/* =====================================================
+   LANGUAGE SETUP
+===================================================== */
 
 Object.entries(languages).forEach(
     ([name, code]) => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
-        option.value = code;
+        option.value =
+            code;
 
-        option.textContent = name;
+        option.textContent =
+            name;
 
-        languageSelect.appendChild(option);
+        languageSelect.appendChild(
+            option
+        );
 
 
         const tag =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        tag.className = "language-tag";
+        tag.className =
+            "language-tag";
 
-        tag.textContent = name;
+        tag.textContent =
+            name;
 
-        languageCloud.appendChild(tag);
+        languageCloud.appendChild(
+            tag
+        );
 
     }
 );
 
 
-languageSelect.value = "en-IN";
+languageSelect.value =
+    "en-IN";
 
+
+/* =====================================================
+   LANGUAGE CHANGE
+===================================================== */
 
 function languageChanged() {
 
     const selected =
-        languageSelect.options[
-            languageSelect.selectedIndex
-        ].text;
+        languageSelect
+            .options[
+                languageSelect.selectedIndex
+            ].text;
+
 
     addAIMessage(
 
-        `Language switched to <strong>${selected}</strong> 🌐.<br><br>
-         You can now interact with INGRES AI using your selected language.`
+        `Language switched to
+        <strong>${escapeHTML(selected)}</strong> 🌐.
+        <br><br>
+        You can now interact with INGRES AI
+        using your selected language.`
 
     );
 
 }
 
 
-/* =========================================================
-   INPUT
-========================================================= */
-
-const input =
-    document.getElementById("messageInput");
-
+/* =====================================================
+   INPUT EVENTS
+===================================================== */
 
 input.addEventListener(
     "keydown",
@@ -150,7 +593,8 @@ input.addEventListener(
     "input",
     function() {
 
-        this.style.height = "auto";
+        this.style.height =
+            "auto";
 
         this.style.height =
             Math.min(
@@ -162,18 +606,73 @@ input.addEventListener(
 );
 
 
-/* =========================================================
-   MESSAGE HELPERS
-========================================================= */
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+async function sendMessage() {
+
+    const text =
+        input.value.trim();
+
+
+    if (!text)
+        return;
+
+
+    addUserMessage(text);
+
+
+    addHistoryItem(text);
+
+
+    input.value = "";
+
+    input.style.height =
+        "auto";
+
+
+    showTyping();
+
+
+    await delay(900);
+
+
+    removeTyping();
+
+
+    const answer =
+        generateINGRESResponse(text);
+
+
+    addAIMessage(answer);
+
+}
+
+
+/* =====================================================
+   PRESET QUESTIONS
+===================================================== */
+
+function askPreset(question) {
+
+    input.value =
+        question;
+
+    sendMessage();
+
+}
+
+
+/* =====================================================
+   USER MESSAGE
+===================================================== */
 
 function addUserMessage(text) {
 
-    const messages =
-        document.getElementById("messages");
-
-
     const element =
         document.createElement("div");
+
 
     element.className =
         "chat-message user";
@@ -200,21 +699,25 @@ function addUserMessage(text) {
     `;
 
 
-    messages.appendChild(element);
+    messages.appendChild(
+        element
+    );
+
 
     scrollMessages();
 
 }
 
 
+/* =====================================================
+   AI MESSAGE
+===================================================== */
+
 function addAIMessage(html) {
-
-    const messages =
-        document.getElementById("messages");
-
 
     const element =
         document.createElement("div");
+
 
     element.className =
         "chat-message";
@@ -241,23 +744,29 @@ function addAIMessage(html) {
     `;
 
 
-    messages.appendChild(element);
+    messages.appendChild(
+        element
+    );
+
 
     scrollMessages();
 
 }
 
 
+/* =====================================================
+   TYPING
+===================================================== */
+
 function showTyping() {
-
-    const messages =
-        document.getElementById("messages");
-
 
     const element =
         document.createElement("div");
 
-    element.id = "typingIndicator";
+
+    element.id =
+        "typingIndicator";
+
 
     element.className =
         "chat-message";
@@ -288,7 +797,10 @@ function showTyping() {
     `;
 
 
-    messages.appendChild(element);
+    messages.appendChild(
+        element
+    );
+
 
     scrollMessages();
 
@@ -302,6 +814,7 @@ function removeTyping() {
             "typingIndicator"
         );
 
+
     if (element) {
 
         element.remove();
@@ -311,10 +824,11 @@ function removeTyping() {
 }
 
 
-function scrollMessages() {
+/* =====================================================
+   SCROLL
+===================================================== */
 
-    const messages =
-        document.getElementById("messages");
+function scrollMessages() {
 
     messages.scrollTop =
         messages.scrollHeight;
@@ -322,73 +836,9 @@ function scrollMessages() {
 }
 
 
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
-
-async function sendMessage() {
-
-    const text =
-        input.value.trim();
-
-
-    if (!text)
-        return;
-
-
-    addUserMessage(text);
-
-
-    input.value = "";
-
-    input.style.height = "auto";
-
-
-    showTyping();
-
-
-    /*
-       DEMO DELAY
-
-       Replace this later with:
-
-       fetch("/api/chat", {
-           method: "POST",
-           body: JSON.stringify(...)
-       })
-    */
-
-    await delay(900);
-
-
-    removeTyping();
-
-
-    const answer =
-        generateINGRESResponse(text);
-
-
-    addAIMessage(answer);
-
-}
-
-
-/* =========================================================
-   PRESET QUESTIONS
-========================================================= */
-
-function askPreset(question) {
-
-    input.value = question;
-
-    sendMessage();
-
-}
-
-
-/* =========================================================
+/* =====================================================
    INGRES RESPONSE ENGINE
-========================================================= */
+===================================================== */
 
 function generateINGRESResponse(question) {
 
@@ -399,25 +849,33 @@ function generateINGRESResponse(question) {
     /* WHAT IS INGRES */
 
     if (
+
         q.includes("what is ingres") ||
+
         q.includes("ingres kya") ||
-        q.includes("ingres क्या")
+
+        q.includes("ingres क्या") ||
+
+        q.includes("ingres")
+
     ) {
 
         return `
 
-            <strong>What is INGRES? 💧</strong>
+            <strong>
+                What is INGRES? 💧
+            </strong>
 
             <br><br>
 
-            INGRES is the groundwater-resource assessment
-            platform associated with India's groundwater
-            resource assessment ecosystem.
+            INGRES is associated with India's
+            groundwater-resource assessment ecosystem.
 
             <br><br>
 
-            It helps organize, assess and disseminate
-            groundwater-resource information.
+            It helps organize, assess and
+            disseminate groundwater-resource
+            information.
 
             <div class="ai-card">
 
@@ -426,11 +884,17 @@ function generateINGRESResponse(question) {
                 </div>
 
                 • Groundwater recharge<br>
+
                 • Extractable groundwater resources<br>
+
                 • Groundwater extraction<br>
+
                 • Stage of groundwater extraction<br>
+
                 • Assessment-unit categorization<br>
+
                 • Reports and groundwater information<br>
+
                 • Maps and analytics
 
             </div>
@@ -443,29 +907,39 @@ function generateINGRESResponse(question) {
     /* RECHARGE */
 
     if (
+
         q.includes("recharge") ||
-        q.includes("भूजल पुनर्भरण")
+
+        q.includes("भूजल पुनर्भरण") ||
+
+        q.includes("replenish")
+
     ) {
 
         return `
 
-            <strong>Groundwater Recharge 🌊</strong>
+            <strong>
+                Groundwater Recharge 🌊
+            </strong>
 
             <br><br>
 
-            Groundwater recharge refers to the process
-            through which water enters and replenishes
-            underground aquifer systems.
+            Groundwater recharge refers to
+            the process through which water
+            enters and replenishes underground
+            aquifer systems.
 
             <div class="ai-card">
 
-                <strong>INGRES perspective</strong>
+                <strong>
+                    INGRES perspective
+                </strong>
 
                 <br><br>
 
-                Recharge is one of the important components
-                considered during groundwater-resource
-                assessment.
+                Recharge is one of the important
+                components considered during
+                groundwater-resource assessment.
 
             </div>
 
@@ -477,25 +951,33 @@ function generateINGRESResponse(question) {
     /* EXTRACTION */
 
     if (
+
         q.includes("extraction") ||
+
         q.includes("निकासी") ||
+
         q.includes("extracted")
+
     ) {
 
         return `
 
-            <strong>Groundwater Extraction 📊</strong>
+            <strong>
+                Groundwater Extraction 📊
+            </strong>
 
             <br><br>
 
-            Groundwater extraction represents the amount
-            of groundwater withdrawn for different uses.
+            Groundwater extraction represents
+            the amount of groundwater withdrawn
+            for different uses.
 
             <br><br>
 
-            INGRES-related assessment information can be
-            used to understand extraction relative to
-            available groundwater resources.
+            INGRES-related assessment information
+            can be used to understand extraction
+            relative to available groundwater
+            resources.
 
             <br><br>
 
@@ -514,14 +996,20 @@ function generateINGRESResponse(question) {
     /* STATUS */
 
     if (
+
         q.includes("status") ||
+
         q.includes("condition") ||
+
         q.includes("स्थिति")
+
     ) {
 
         return `
 
-            <strong>Groundwater Status 🗺️</strong>
+            <strong>
+                Groundwater Status 🗺️
+            </strong>
 
             <br><br>
 
@@ -565,16 +1053,22 @@ function generateINGRESResponse(question) {
     /* MAP */
 
     if (
+
         q.includes("map") ||
+
         q.includes("district") ||
+
         q.includes("state") ||
+
         q.includes("location")
+
     ) {
 
         setTimeout(
             showGroundwaterMap,
             100
         );
+
 
         return `
 
@@ -584,27 +1078,34 @@ function generateINGRESResponse(question) {
 
             <br><br>
 
-            You can use the map to explore locations
-            and visualize groundwater-related information.
+            You can use the map to explore
+            locations and visualize
+            groundwater-related information.
 
         `;
 
     }
 
 
-    /* GRAPH */
+    /* ANALYTICS */
 
     if (
+
         q.includes("graph") ||
+
         q.includes("chart") ||
+
         q.includes("trend") ||
+
         q.includes("analytics")
+
     ) {
 
         setTimeout(
             showAnalytics,
             100
         );
+
 
         return `
 
@@ -614,8 +1115,8 @@ function generateINGRESResponse(question) {
 
             <br><br>
 
-            I've generated a visualization area for
-            groundwater-resource trends.
+            I've generated a visualization area
+            for groundwater-resource trends.
 
         `;
 
@@ -625,14 +1126,20 @@ function generateINGRESResponse(question) {
     /* HINDI */
 
     if (
+
         q.includes("नमस्ते") ||
+
         q.includes("भूजल") ||
+
         q.includes("आईएनजीआरईएस")
+
     ) {
 
         return `
 
-            <strong>नमस्ते! 🇮🇳</strong>
+            <strong>
+                नमस्ते! 🇮🇳
+            </strong>
 
             <br><br>
 
@@ -658,15 +1165,22 @@ function generateINGRESResponse(question) {
     /* GENERAL */
 
     if (
+
         q.includes("hello") ||
+
         q.includes("hi") ||
+
         q.includes("hey") ||
+
         q.includes("namaste")
+
     ) {
 
         return `
 
-            <strong>Namaste! 👋</strong>
+            <strong>
+                Namaste! 👋
+            </strong>
 
             <br><br>
 
@@ -679,10 +1193,15 @@ function generateINGRESResponse(question) {
             <div class="ai-card">
 
                 💧 Groundwater concepts<br>
+
                 🗺️ Groundwater maps<br>
+
                 📊 Groundwater analytics<br>
+
                 📄 Reports and documents<br>
+
                 🌐 Multilingual assistance<br>
+
                 🎙️ Voice interaction
 
             </div>
@@ -704,9 +1223,10 @@ function generateINGRESResponse(question) {
 
         <br><br>
 
-        For a production version, this question will
-        be sent to the INGRES AI backend and retrieved
-        against the official INGRES/CGWB knowledge base.
+        For a production version, this question
+        would be sent to the INGRES AI backend
+        and retrieved against the official
+        INGRES/CGWB knowledge base.
 
         <div class="ai-card">
 
@@ -715,10 +1235,15 @@ function generateINGRESResponse(question) {
             </div>
 
             • What is groundwater recharge?<br>
+
             • Explain groundwater extraction.<br>
+
             • What is stage of groundwater extraction?<br>
+
             • Show groundwater status of a state.<br>
+
             • Explain this INGRES report.<br>
+
             • Show groundwater trends.
 
         </div>
@@ -728,12 +1253,9 @@ function generateINGRESResponse(question) {
 }
 
 
-/* =========================================================
+/* =====================================================
    MAP
-========================================================= */
-
-let groundwaterMap = null;
-
+===================================================== */
 
 function showGroundwaterMap() {
 
@@ -756,170 +1278,12 @@ function showGroundwaterMap() {
 
             Interactive location explorer
 
-        </div>
-
-        <div class="map-container">
-
-            <div id="groundwaterMap"></div>
-
-        </div>
-
-    `);
-
-
-    setTimeout(
-        initializeMap,
-        150
-    );
-
-}
-
-
-function initializeMap() {
-
-    const mapElement =
-        document.getElementById(
-            "groundwaterMap"
-        );
-
-
-    if (!mapElement)
-        return;
-
-
-    if (groundwaterMap) {
-
-        groundwaterMap.remove();
-
-    }
-
-
-    /*
-       Default: New Delhi
-
-       Later replace with:
-
-       INGRES GIS/API coordinates
-    */
-
-    groundwaterMap =
-        L.map(
-            "groundwaterMap"
-        ).setView(
-            [28.6139,77.2090],
-            6
-        );
-
-
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            attribution:
-                "© OpenStreetMap contributors"
-        }
-    ).addTo(
-        groundwaterMap
-    );
-
-
-    const locations = [
-
-        {
-            name: "New Delhi",
-            lat: 28.6139,
-            lon: 77.2090,
-            status: "Demo assessment location"
-        },
-
-        {
-            name: "Gurugram",
-            lat: 28.4595,
-            lon: 77.0266,
-            status: "Demo assessment location"
-        },
-
-        {
-            name: "Jaipur",
-            lat: 26.9124,
-            lon: 75.7873,
-            status: "Demo assessment location"
-        },
-
-        {
-            name: "Lucknow",
-            lat: 26.8467,
-            lon: 80.9462,
-            status: "Demo assessment location"
-        }
-
-    ];
-
-
-    locations.forEach(
-        location => {
-
-            L.marker(
-                [
-                    location.lat,
-                    location.lon
-                ]
-            )
-
-            .addTo(
-                groundwaterMap
-            )
-
-            .bindPopup(`
-
-                <strong>
-                    ${location.name}
-                </strong>
-
-                <br><br>
-
-                ${location.status}
-
-                <br><br>
-
-                <button
-                    onclick="locationSelected('${location.name}')"
-                >
-                    Explore →
-                </button>
-
-            `);
-
-        }
-    );
-
-}
-
-
-function locationSelected(name) {
-
-    addAIMessage(`
-
-        <strong>
-            ${name} selected 📍
-        </strong>
-
-        <br><br>
-
-        The production version will retrieve
-        the corresponding INGRES assessment-unit
-        information from the backend.
-
-        <div class="ai-card">
-
-            <strong>Potential data</strong>
-
             <br><br>
 
-            • Annual groundwater recharge<br>
-            • Extractable groundwater resource<br>
-            • Groundwater extraction<br>
-            • Stage of extraction<br>
-            • Assessment category
+            📍 Haryana<br>
+            📍 Punjab<br>
+            📍 Rajasthan<br>
+            📍 Uttar Pradesh
 
         </div>
 
@@ -928,9 +1292,9 @@ function locationSelected(name) {
 }
 
 
-/* =========================================================
+/* =====================================================
    ANALYTICS
-========================================================= */
+===================================================== */
 
 function showAnalytics() {
 
@@ -942,198 +1306,200 @@ function showAnalytics() {
 
         <br><br>
 
-        Sample visualization interface for
-        INGRES groundwater-resource data.
+        Demo groundwater-resource analytics
+        are displayed below.
 
         <div class="ai-card">
 
-            <div class="chart-container">
+            <div class="ai-card-title">
+                DEMO ANALYTICS
+            </div>
 
-                <canvas id="groundwaterChart"></canvas>
+            Groundwater Recharge
+            ███████████████ 78%
+
+            <br>
+
+            Groundwater Extraction
+            ███████████ 58%
+
+            <br>
+
+            Resource Availability
+            █████████████ 68%
+
+            <br>
+
+            Assessment Coverage
+            ████████████████ 84%
+
+        </div>
+
+    `);
+
+}
+
+
+/* =====================================================
+   NEW CHAT
+===================================================== */
+
+function newChat() {
+
+    messages.innerHTML = "";
+
+    showWelcomeMessage();
+
+}
+
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+function showWelcomeMessage() {
+
+    messages.innerHTML = `
+
+        <div class="welcome-message">
+
+            <div class="welcome-icon">
+                💧
+            </div>
+
+            <h1>
+                Namaste! I'm INGRES AI
+            </h1>
+
+            <p>
+                Your AI-powered virtual assistant
+                for groundwater information.
+            </p>
+
+            <div class="quick-grid">
+
+                <button
+                    onclick="askPreset('What is INGRES?')"
+                >
+                    <strong>
+                        💧 What is INGRES?
+                    </strong>
+
+                    <span>
+                        Learn about the platform
+                    </span>
+                </button>
+
+
+                <button
+                    onclick="askPreset('What is groundwater recharge?')"
+                >
+                    <strong>
+                        🌊 Groundwater Recharge
+                    </strong>
+
+                    <span>
+                        Understand recharge
+                    </span>
+                </button>
+
+
+                <button
+                    onclick="askPreset('Show groundwater status')"
+                >
+                    <strong>
+                        🗺️ Groundwater Status
+                    </strong>
+
+                    <span>
+                        Explore groundwater status
+                    </span>
+                </button>
+
+
+                <button
+                    onclick="askPreset('Show groundwater analytics')"
+                >
+                    <strong>
+                        📊 Analytics
+                    </strong>
+
+                    <span>
+                        Explore groundwater trends
+                    </span>
+                </button>
 
             </div>
 
         </div>
 
-        <small style="color:#555f70">
-            Demo visualization — connect the chart
-            to live INGRES data through the backend.
-        </small>
-
-    `);
-
-
-    setTimeout(
-        initializeChart,
-        150
-    );
+    `;
 
 }
 
 
-function initializeChart() {
+/* =====================================================
+   HISTORY
+===================================================== */
 
-    const canvas =
+function addHistoryItem(text) {
+
+    const history =
         document.getElementById(
-            "groundwaterChart"
+            "history"
         );
 
 
-    if (!canvas)
-        return;
+    const item =
+        document.createElement(
+            "div"
+        );
 
 
-    new Chart(
-        canvas,
-        {
+    item.className =
+        "history-item";
 
-            type: "line",
 
-            data: {
+    item.textContent =
+        text.length > 30
+            ? text.substring(0,30) + "..."
+            : text;
 
-                labels: [
-                    "2020",
-                    "2021",
-                    "2022",
-                    "2023",
-                    "2024",
-                    "2025"
-                ],
 
-                datasets: [
+    item.onclick =
+        function() {
 
-                    {
+            input.value =
+                text;
 
-                        label:
-                            "Groundwater Extraction",
+            input.focus();
 
-                        data: [
-                            52,
-                            57,
-                            61,
-                            66,
-                            70,
-                            73
-                        ],
+        };
 
-                        borderWidth: 2,
 
-                        tension: .4,
+    history.prepend(item);
 
-                        pointRadius: 3
 
-                    },
+    const items =
+        history.querySelectorAll(
+            ".history-item"
+        );
 
-                    {
 
-                        label:
-                            "Recharge",
+    if (items.length > 5) {
 
-                        data: [
-                            82,
-                            80,
-                            79,
-                            77,
-                            76,
-                            74
-                        ],
+        items[
+            items.length - 1
+        ].remove();
 
-                        borderWidth: 2,
-
-                        tension: .4,
-
-                        pointRadius: 3
-
-                    }
-
-                ]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-
-                        labels: {
-
-                            color: "#8d98a8",
-
-                            font: {
-                                size: 9
-                            }
-
-                        }
-
-                    }
-
-                },
-
-                scales: {
-
-                    x: {
-
-                        ticks: {
-
-                            color: "#657082",
-
-                            font: {
-                                size: 8
-                            }
-
-                        },
-
-                        grid: {
-
-                            color:
-                                "rgba(255,255,255,.04)"
-
-                        }
-
-                    },
-
-                    y: {
-
-                        ticks: {
-
-                            color: "#657082",
-
-                            font: {
-                                size: 8
-                            }
-
-                        },
-
-                        grid: {
-
-                            color:
-                                "rgba(255,255,255,.04)"
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-    );
+    }
 
 }
 
 
-/* =========================================================
-   VOICE ASSISTANT
-========================================================= */
-
-let recognition = null;
-
+/* =====================================================
+   VOICE INPUT
+===================================================== */
 
 function startVoice() {
 
@@ -1147,14 +1513,18 @@ function startVoice() {
         addAIMessage(`
 
             <strong>
-                Voice recognition unavailable 🎙️
+                Voice input unavailable 🎙️
             </strong>
 
             <br><br>
 
-            Please use a browser that supports
-            Web Speech Recognition, such as a
-            compatible version of Chrome.
+            Your browser does not support
+            speech recognition.
+
+            <br><br>
+
+            Try using Google Chrome or
+            Microsoft Edge.
 
         `);
 
@@ -1163,68 +1533,52 @@ function startVoice() {
     }
 
 
-    recognition =
+    const recognition =
         new SpeechRecognition();
 
 
     recognition.lang =
-        languageSelect.value;
+        languageSelect.value ||
+        "en-IN";
 
 
-    recognition.continuous = false;
-
-    recognition.interimResults = true;
-
-
-    const voiceButton =
-        document.getElementById(
-            "voiceButton"
-        );
+    recognition.interimResults =
+        false;
 
 
-    voiceButton.classList.add(
-        "listening"
-    );
+    recognition.maxAlternatives =
+        1;
 
 
-    input.placeholder =
-        "Listening... 🎙️";
+    recognition.start();
+
+
+    addAIMessage(`
+
+        <strong>
+            Listening... 🎙️
+        </strong>
+
+        <br><br>
+
+        Please speak your question.
+
+    `);
 
 
     recognition.onresult =
         function(event) {
 
-            let transcript = "";
-
-
-            for (
-                let i = event.resultIndex;
-                i < event.results.length;
-                i++
-            ) {
-
-                transcript +=
-                    event.results[i][0]
-                        .transcript;
-
-            }
+            const transcript =
+                event.results[0][0]
+                    .transcript;
 
 
             input.value =
                 transcript;
 
-        };
 
-
-    recognition.onend =
-        function() {
-
-            voiceButton.classList.remove(
-                "listening"
-            );
-
-            input.placeholder =
-                "Ask anything about INGRES...";
+            input.focus();
 
         };
 
@@ -1232,154 +1586,33 @@ function startVoice() {
     recognition.onerror =
         function() {
 
-            voiceButton.classList.remove(
-                "listening"
-            );
-
-            input.placeholder =
-                "Ask anything about INGRES...";
-
-        };
-
-
-    recognition.start();
-
-}
-
-
-/* =========================================================
-   TEXT TO SPEECH
-========================================================= */
-
-function speak(text) {
-
-    if (
-        !window.speechSynthesis
-    )
-        return;
-
-
-    const utterance =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-
-    utterance.lang =
-        languageSelect.value;
-
-
-    window.speechSynthesis.speak(
-        utterance
-    );
-
-}
-
-
-/* =========================================================
-   FILE UPLOAD
-========================================================= */
-
-function fileSelected(event) {
-
-    const file =
-        event.target.files[0];
-
-
-    if (!file)
-        return;
-
-
-    addUserMessage(
-        `📎 Uploaded document: ${file.name}`
-    );
-
-
-    showTyping();
-
-
-    setTimeout(
-        () => {
-
-            removeTyping();
-
-
             addAIMessage(`
 
                 <strong>
-                    Document received 📄
+                    Voice input could not be started.
                 </strong>
 
                 <br><br>
 
-                <strong>
-                    ${escapeHTML(file.name)}
-                </strong>
-
-                is ready for processing.
-
-                <br><br>
-
-                In the production version,
-                the backend will extract the document
-                content and add it to the INGRES RAG
-                pipeline for question answering.
+                Please check your microphone
+                permission and try again.
 
             `);
 
-        },
-        900
-    );
+        };
 
 }
 
 
-/* =========================================================
-   NEW CHAT
-========================================================= */
-
-function newChat() {
-
-    const messages =
-        document.getElementById(
-            "messages"
-        );
-
-
-    messages.innerHTML = `
-
-        <div class="welcome">
-
-            <div class="welcome-icon">
-                💧
-            </div>
-
-            <h2>
-                New INGRES conversation.
-            </h2>
-
-            <p>
-                What would you like to explore?
-            </p>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   UTILS
-========================================================= */
+/* =====================================================
+   HELPERS
+===================================================== */
 
 function delay(ms) {
 
     return new Promise(
-        resolve => setTimeout(
-            resolve,
-            ms
-        )
+        resolve =>
+            setTimeout(resolve, ms)
     );
 
 }
@@ -1387,11 +1620,40 @@ function delay(ms) {
 
 function escapeHTML(text) {
 
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    const div =
+        document.createElement("div");
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
 
 }
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+/*
+   IMPORTANT:
+
+   The first page shown is the landing page.
+
+   If you want automatic login on a returning
+   user, uncomment the next line.
+*/
+
+// checkExistingLogin();
+
+
+landing.style.display =
+    "block";
+
+loginPage.style.display =
+    "none";
+
+assistant.style.display =
+    "none";
