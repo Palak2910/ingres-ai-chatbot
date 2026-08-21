@@ -4,17 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>INGRES AI | Groundwater Virtual Assistant</title>
+    <title>INGRES AI — Groundwater Intelligence Assistant</title>
 
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
-    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
@@ -23,9 +34,8 @@
      LANDING PAGE
 ===================================================== -->
 
-<div id="landing">
+<section id="landing">
 
-    <!-- NAVBAR -->
     <nav class="navbar">
 
         <div class="brand">
@@ -35,10 +45,7 @@
             </div>
 
             <div>
-                <div class="brand-name">
-                    INGRES AI
-                </div>
-
+                <div class="brand-name">INGRES AI</div>
                 <div class="brand-subtitle">
                     Groundwater Intelligence
                 </div>
@@ -48,24 +55,25 @@
 
 
         <div class="nav-links">
+
             <a href="#features">Features</a>
             <a href="#languages">Languages</a>
             <a href="#about">About</a>
+
         </div>
 
 
         <button
             class="nav-button"
-            onclick="openLogin()"
+            onclick="openAssistant()"
         >
-            Login
+            Launch Assistant
         </button>
 
     </nav>
 
 
-    <!-- HERO -->
-    <section class="hero">
+    <main class="hero">
 
         <div class="hero-glow glow-one"></div>
         <div class="hero-glow glow-two"></div>
@@ -77,7 +85,7 @@
 
                 <span class="live-dot"></span>
 
-                AI-Powered Groundwater Assistant
+                AI-Powered INGRES Virtual Assistant
 
             </div>
 
@@ -89,16 +97,18 @@
 
                 <br>
 
-                Ask INGRES AI.
+                In Your Language.
 
             </h1>
 
 
             <p>
-                An AI-driven virtual assistant for INGRES that helps
-                users understand groundwater-resource assessment,
-                recharge, extraction, maps, reports and analytics
-                through a simple conversational interface.
+
+                Ask questions about groundwater resources,
+                recharge, extraction, assessment categories,
+                reports and INGRES data — using text or voice
+                in English or your native Indian language.
+
             </p>
 
 
@@ -106,7 +116,7 @@
 
                 <button
                     class="primary-button"
-                    onclick="openLogin()"
+                    onclick="openAssistant()"
                 >
                     Start with INGRES AI
                     <span>→</span>
@@ -126,26 +136,38 @@
             <div class="hero-stats">
 
                 <div class="stat">
-                    <strong>22</strong>
+
+                    <strong>22+</strong>
+
                     <span>Indian Languages</span>
+
                 </div>
 
 
                 <div class="stat">
+
                     <strong>AI</strong>
-                    <span>Virtual Assistant</span>
+
+                    <span>Knowledge Assistant</span>
+
                 </div>
 
 
                 <div class="stat">
-                    <strong>24/7</strong>
-                    <span>Information Access</span>
-                </div>
 
-
-                <div class="stat">
                     <strong>GIS</strong>
+
                     <span>Groundwater Maps</span>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <strong>24×7</strong>
+
+                    <span>Virtual Assistance</span>
+
                 </div>
 
             </div>
@@ -153,7 +175,8 @@
         </div>
 
 
-        <!-- CHAT PREVIEW -->
+        <!-- HERO CHAT PREVIEW -->
+
         <div class="hero-preview">
 
             <div class="preview-window">
@@ -166,11 +189,9 @@
                         <span></span>
                     </div>
 
-
                     <div class="preview-title">
                         INGRES AI
                     </div>
-
 
                     <div class="online">
                         ● Online
@@ -181,20 +202,22 @@
 
                 <div class="preview-body">
 
-                    <div class="preview-message">
+                    <div class="preview-message ai">
 
                         <div class="mini-avatar">
                             💧
                         </div>
 
                         <div>
-                            <strong>INGRES AI</strong>
+
+                            <small>INGRES AI</small>
 
                             <p>
-                                Namaste! I am INGRES AI.
-                                How can I help you understand
-                                groundwater resources?
+                                Namaste! 👋 How can I help
+                                you understand groundwater
+                                resources today?
                             </p>
+
                         </div>
 
                     </div>
@@ -203,13 +226,14 @@
                     <div class="preview-message user">
 
                         <p>
-                            What is groundwater recharge?
+                            मेरे जिले में भूजल की स्थिति
+                            कैसी है?
                         </p>
 
                     </div>
 
 
-                    <div class="preview-message">
+                    <div class="preview-message ai">
 
                         <div class="mini-avatar">
                             💧
@@ -217,12 +241,13 @@
 
                         <div>
 
-                            <strong>INGRES AI</strong>
+                            <small>INGRES AI</small>
 
                             <p>
-                                Groundwater recharge is the process
-                                through which water enters and
-                                replenishes underground aquifer systems.
+                                मैं आपके जिले के INGRES
+                                डेटा के आधार पर भूजल
+                                स्थिति समझाने में मदद कर
+                                सकता हूँ।
                             </p>
 
                         </div>
@@ -231,16 +256,14 @@
 
                 </div>
 
-
                 <div class="preview-input">
 
                     <span>
-                        Ask anything about groundwater...
+                        Ask INGRES AI...
                     </span>
 
-                    <button>
-                        ↑
-                    </button>
+                    <button>🎙️</button>
+                    <button>↑</button>
 
                 </div>
 
@@ -248,22 +271,23 @@
 
         </div>
 
-    </section>
+    </main>
 
 
     <!-- FEATURES -->
+
     <section
-        class="features-section"
         id="features"
+        class="features-section"
     >
 
         <div class="section-heading">
 
-            <span>CAPABILITIES</span>
+            <span>POWERFUL FEATURES</span>
 
             <h2>
-                One assistant.
-                <span>Multiple possibilities.</span>
+                One assistant for
+                <span>INGRES intelligence.</span>
             </h2>
 
         </div>
@@ -271,20 +295,16 @@
 
         <div class="feature-grid">
 
-
             <div class="feature-card">
 
-                <div class="feature-icon">
-                    💧
-                </div>
+                <div class="feature-icon">🤖</div>
 
-                <h3>
-                    Groundwater Intelligence
-                </h3>
+                <h3>INGRES AI Assistant</h3>
 
                 <p>
-                    Ask questions about groundwater recharge,
-                    extraction, resources and assessment.
+                    Ask natural-language questions about
+                    groundwater-resource assessment and
+                    INGRES-related information.
                 </p>
 
             </div>
@@ -292,17 +312,14 @@
 
             <div class="feature-card">
 
-                <div class="feature-icon">
-                    🗺️
-                </div>
+                <div class="feature-icon">🇮🇳</div>
 
-                <h3>
-                    Groundwater Maps
-                </h3>
+                <h3>Indian Languages</h3>
 
                 <p>
-                    Explore groundwater information by
-                    state, district and location.
+                    Interact in English and India's
+                    scheduled languages through a
+                    multilingual conversational interface.
                 </p>
 
             </div>
@@ -310,17 +327,13 @@
 
             <div class="feature-card">
 
-                <div class="feature-icon">
-                    📊
-                </div>
+                <div class="feature-icon">🎙️</div>
 
-                <h3>
-                    Analytics
-                </h3>
+                <h3>Voice Assistant</h3>
 
                 <p>
-                    Understand groundwater trends,
-                    statistics and assessment information.
+                    Ask questions naturally using voice
+                    and receive spoken responses.
                 </p>
 
             </div>
@@ -328,17 +341,14 @@
 
             <div class="feature-card">
 
-                <div class="feature-icon">
-                    🌐
-                </div>
+                <div class="feature-icon">🗺️</div>
 
-                <h3>
-                    22 Indian Languages
-                </h3>
+                <h3>Groundwater Maps</h3>
 
                 <p>
-                    Interact with the assistant in
-                    multiple Indian languages.
+                    Explore locations and visualize
+                    groundwater-related information on
+                    interactive maps.
                 </p>
 
             </div>
@@ -346,17 +356,13 @@
 
             <div class="feature-card">
 
-                <div class="feature-icon">
-                    📄
-                </div>
+                <div class="feature-icon">📊</div>
 
-                <h3>
-                    Reports & Documents
-                </h3>
+                <h3>Data Analytics</h3>
 
                 <p>
-                    Understand groundwater reports,
-                    documents and technical information.
+                    Turn groundwater information into
+                    understandable charts and trends.
                 </p>
 
             </div>
@@ -364,17 +370,13 @@
 
             <div class="feature-card">
 
-                <div class="feature-icon">
-                    🎙️
-                </div>
+                <div class="feature-icon">📄</div>
 
-                <h3>
-                    Voice Interaction
-                </h3>
+                <h3>Report Intelligence</h3>
 
                 <p>
-                    Designed for conversational and
-                    accessible interaction.
+                    Upload relevant documents and connect
+                    them to an AI-powered knowledge layer.
                 </p>
 
             </div>
@@ -384,370 +386,64 @@
     </section>
 
 
-    <!-- LANGUAGES -->
     <section
-        class="language-section"
         id="languages"
+        class="language-section"
     >
 
         <div class="section-heading">
 
-            <span>LANGUAGE SUPPORT</span>
+            <span>BUILT FOR INDIA</span>
 
             <h2>
-                Speak in your
-                <span>language.</span>
+                Speak naturally.
+                <span>Ask freely.</span>
             </h2>
 
         </div>
 
 
-        <div
-            class="language-cloud"
-            id="languageCloud"
-        >
-        </div>
+        <div class="language-cloud" id="languageCloud"></div>
 
     </section>
 
 
-    <!-- ABOUT -->
-    <section
-        class="about-section"
-        id="about"
-    >
-
-        <div class="about-card">
-
-            <div class="about-icon">
-                🤖
-            </div>
-
-            <div>
-
-                <div class="about-label">
-                    PROBLEM STATEMENT
-                </div>
-
-                <h2>
-                    Development of an AI-driven
-                    Chatbot for INGRES as a
-                    Virtual Assistant
-                </h2>
-
-                <p>
-                    INGRES AI is designed as an intelligent
-                    conversational interface that makes
-                    groundwater-resource information easier
-                    to understand and access.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- FOOTER -->
-    <footer>
+    <footer id="about">
 
         <div class="footer-brand">
 
-            <div class="brand-icon small">
-                💧
-            </div>
+            <div class="brand-icon">💧</div>
 
-            <strong>
-                INGRES AI
-            </strong>
+            <strong>INGRES AI</strong>
 
         </div>
 
         <p>
-            AI-driven virtual assistance for groundwater
-            resource information.
+            AI-driven virtual assistant for
+            groundwater-resource intelligence.
         </p>
 
         <span>
-            © 2026 INGRES AI. Frontend Demonstration.
+            Designed for the INGRES ecosystem.
         </span>
 
     </footer>
 
-</div>
+</section>
 
 
 
 <!-- =====================================================
-     LOGIN PAGE
+     CHAT APPLICATION
 ===================================================== -->
 
-<div
-    id="login-page"
-    class="login-page"
->
-
-    <div class="login-background">
-
-        <div class="login-glow login-glow-one"></div>
-        <div class="login-glow login-glow-two"></div>
-
-    </div>
-
-
-    <div class="login-wrapper">
-
-
-        <!-- LEFT INFORMATION -->
-        <div class="login-info">
-
-            <div class="login-brand">
-
-                <div class="brand-icon">
-                    💧
-                </div>
-
-                <div>
-
-                    <strong>
-                        INGRES AI
-                    </strong>
-
-                    <span>
-                        Groundwater Intelligence
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="login-info-content">
-
-                <div class="status-badge">
-                    <span class="live-dot"></span>
-                    AI-Powered Assistant
-                </div>
-
-
-                <h1>
-                    Your gateway to
-                    <span>groundwater intelligence.</span>
-                </h1>
-
-
-                <p>
-                    Sign in to access the INGRES AI virtual
-                    assistant and explore groundwater
-                    information in 22 Indian languages.
-                </p>
-
-
-                <div class="login-features">
-
-                    <div>
-                        <span>✓</span>
-                        22 Indian Languages
-                    </div>
-
-                    <div>
-                        <span>✓</span>
-                        Groundwater Maps & Analytics
-                    </div>
-
-                    <div>
-                        <span>✓</span>
-                        AI-powered assistance
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- LOGIN CARD -->
-        <div class="login-card">
-
-            <button
-                class="back-button"
-                onclick="backToLanding()"
-            >
-                ← Back
-            </button>
-
-
-            <div class="login-card-header">
-
-                <div class="login-icon">
-                    🔐
-                </div>
-
-                <h2>
-                    Welcome back
-                </h2>
-
-                <p>
-                    Sign in to continue to INGRES AI
-                </p>
-
-            </div>
-
-
-            <form id="loginForm">
-
-                <div class="form-group">
-
-                    <label for="loginEmail">
-                        Email address
-                    </label>
-
-                    <input
-                        type="email"
-                        id="loginEmail"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="loginPassword">
-                        Password
-                    </label>
-
-                    <div class="password-wrapper">
-
-                        <input
-                            type="password"
-                            id="loginPassword"
-                            placeholder="Enter your password"
-                            autocomplete="current-password"
-                        >
-
-                        <button
-                            type="button"
-                            id="passwordToggle"
-                            onclick="togglePassword()"
-                        >
-                            👁
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="login-options">
-
-                    <label class="remember">
-
-                        <input
-                            type="checkbox"
-                            id="rememberMe"
-                        >
-
-                        <span>
-                            Remember me
-                        </span>
-
-                    </label>
-
-
-                    <button
-                        type="button"
-                        class="forgot-button"
-                        onclick="forgotPassword()"
-                    >
-                        Forgot password?
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="loginError"
-                    class="login-message"
-                ></div>
-
-
-                <button
-                    type="submit"
-                    class="login-submit"
-                >
-                    Sign in
-                    <span>→</span>
-                </button>
-
-            </form>
-
-
-            <div class="divider">
-                <span>OR</span>
-            </div>
-
-
-            <button
-                class="google-button"
-                onclick="googleLogin()"
-            >
-                <span class="google-icon">
-                    G
-                </span>
-
-                Continue with Google
-            </button>
-
-
-            <p class="signup-text">
-
-                Don't have an account?
-
-                <button
-                    onclick="showSignupMessage()"
-                >
-                    Create account
-                </button>
-
-            </p>
-
-
-            <div class="demo-note">
-
-                <strong>Demo Login</strong>
-
-                <br>
-
-                Enter any valid email and a password
-                with at least 6 characters.
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     MAIN ASSISTANT
-===================================================== -->
-
-<div
-    id="assistant"
-    class="assistant-page"
->
+<section id="assistant">
 
     <div class="app-layout">
 
 
         <!-- SIDEBAR -->
+
         <aside class="sidebar">
 
             <div class="sidebar-brand">
@@ -758,12 +454,10 @@
 
                 <div>
 
-                    <strong>
-                        INGRES AI
-                    </strong>
+                    <strong>INGRES AI</strong>
 
                     <small>
-                        Groundwater Assistant
+                        Virtual Assistant
                     </small>
 
                 </div>
@@ -776,15 +470,15 @@
                 onclick="newChat()"
             >
                 <span>＋</span>
-                New Chat
+                New conversation
             </button>
 
 
             <div class="sidebar-section">
 
-                <div class="section-label">
-                    ASSISTANT
-                </div>
+                <small class="section-label">
+                    QUICK ACCESS
+                </small>
 
 
                 <button
@@ -798,10 +492,19 @@
 
                 <button
                     class="side-item"
-                    onclick="askPreset('What is groundwater recharge?')"
+                    onclick="showGroundwaterMap()"
                 >
-                    <span>🌊</span>
-                    Groundwater Recharge
+                    <span>🗺️</span>
+                    Groundwater Map
+                </button>
+
+
+                <button
+                    class="side-item"
+                    onclick="showAnalytics()"
+                >
+                    <span>📊</span>
+                    Groundwater Analytics
                 </button>
 
 
@@ -809,26 +512,8 @@
                     class="side-item"
                     onclick="askPreset('Explain groundwater extraction')"
                 >
-                    <span>📊</span>
-                    Groundwater Extraction
-                </button>
-
-
-                <button
-                    class="side-item"
-                    onclick="askPreset('Show groundwater status')"
-                >
-                    <span>🗺️</span>
-                    Groundwater Status
-                </button>
-
-
-                <button
-                    class="side-item"
-                    onclick="askPreset('Show groundwater analytics')"
-                >
-                    <span>📈</span>
-                    Analytics
+                    <span>💡</span>
+                    Explain Concepts
                 </button>
 
             </div>
@@ -836,17 +521,24 @@
 
             <div class="sidebar-section">
 
-                <div class="section-label">
-                    RECENT
-                </div>
+                <small class="section-label">
+                    RECENT CHATS
+                </small>
 
-                <div
-                    id="history"
-                    class="history-list"
-                >
+                <div id="history">
+
                     <div class="history-item">
-                        Welcome to INGRES AI
+                        🗺️ Groundwater status
                     </div>
+
+                    <div class="history-item">
+                        📊 Extraction analysis
+                    </div>
+
+                    <div class="history-item">
+                        📄 INGRES report
+                    </div>
+
                 </div>
 
             </div>
@@ -855,18 +547,17 @@
             <div class="sidebar-bottom">
 
                 <div class="connection">
+
                     <span class="green-dot"></span>
-                    Demo system online
+
+                    INGRES Knowledge Base
+
                 </div>
 
-
-                <button
-                    class="side-item"
-                    onclick="logout()"
-                >
-                    <span>↪</span>
-                    Logout
-                </button>
+                <small>
+                    AI responses should be
+                    verified against official sources.
+                </small>
 
             </div>
 
@@ -875,39 +566,54 @@
 
 
         <!-- MAIN CHAT -->
-        <main class="chat-area">
+
+        <main class="chat-container">
 
 
-            <!-- TOP BAR -->
+            <!-- HEADER -->
+
             <header class="chat-header">
 
-                <div>
+                <div class="mobile-menu">
+                    ☰
+                </div>
 
-                    <h2>
-                        INGRES AI
-                    </h2>
 
-                    <span>
-                        Groundwater Virtual Assistant
-                    </span>
+                <div class="assistant-info">
+
+                    <div class="assistant-avatar">
+                        💧
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            INGRES AI
+                        </strong>
+
+                        <span>
+                            ● Online
+                        </span>
+
+                    </div>
 
                 </div>
 
 
-                <div class="header-actions">
+                <div class="header-controls">
 
                     <select
                         id="languageSelect"
                         onchange="languageChanged()"
-                    >
-                    </select>
+                    ></select>
 
 
                     <button
                         class="header-button"
-                        onclick="logout()"
+                        onclick="newChat()"
+                        title="New Chat"
                     >
-                        Logout
+                        ＋
                     </button>
 
                 </div>
@@ -917,78 +623,87 @@
 
 
             <!-- MESSAGES -->
+
             <div
-                id="messages"
                 class="messages"
+                id="messages"
             >
 
-                <div class="welcome-message">
+                <!-- WELCOME -->
+
+                <div class="welcome">
 
                     <div class="welcome-icon">
                         💧
                     </div>
 
-                    <h1>
-                        Namaste! I'm INGRES AI
-                    </h1>
+                    <h2>
+                        Namaste! I'm INGRES AI.
+                    </h2>
 
                     <p>
-                        Your AI-powered virtual assistant
-                        for groundwater information.
+                        Your multilingual virtual assistant
+                        for groundwater-resource intelligence.
                     </p>
 
 
-                    <div class="quick-grid">
+                    <div class="suggestion-grid">
 
                         <button
-                            onclick="askPreset('What is INGRES?')"
+                            onclick="askPreset('What is INGRES and what does it do?')"
                         >
-                            <strong>
-                                💧 What is INGRES?
-                            </strong>
-
-                            <span>
-                                Learn about the platform
-                            </span>
+                            <span>💧</span>
+                            <div>
+                                <strong>What is INGRES?</strong>
+                                <small>
+                                    Learn about the platform
+                                </small>
+                            </div>
                         </button>
 
 
                         <button
-                            onclick="askPreset('What is groundwater recharge?')"
+                            onclick="askPreset('Explain groundwater recharge')"
                         >
-                            <strong>
-                                🌊 Groundwater Recharge
-                            </strong>
-
-                            <span>
-                                Understand recharge
-                            </span>
+                            <span>🌊</span>
+                            <div>
+                                <strong>
+                                    Groundwater recharge
+                                </strong>
+                                <small>
+                                    Explain the concept
+                                </small>
+                            </div>
                         </button>
 
 
                         <button
-                            onclick="askPreset('Show groundwater status')"
+                            onclick="showGroundwaterMap()"
                         >
-                            <strong>
-                                🗺️ Groundwater Status
-                            </strong>
-
-                            <span>
-                                Explore groundwater status
-                            </span>
+                            <span>🗺️</span>
+                            <div>
+                                <strong>
+                                    Explore groundwater map
+                                </strong>
+                                <small>
+                                    Open interactive map
+                                </small>
+                            </div>
                         </button>
 
 
                         <button
-                            onclick="askPreset('Show groundwater analytics')"
+                            onclick="showAnalytics()"
                         >
-                            <strong>
-                                📊 Analytics
-                            </strong>
-
-                            <span>
-                                Explore groundwater trends
-                            </span>
+                            <span>📊</span>
+                            <div>
+                                <strong>
+                                    Groundwater analytics
+                                </strong>
+                                <small>
+                                    View sample trends
+                                </small>
+                            </div>
                         </button>
 
                     </div>
@@ -999,22 +714,24 @@
 
 
 
-            <!-- INPUT -->
-            <div class="input-area">
+            <!-- INPUT AREA -->
+
+            <div class="input-wrapper">
 
                 <div class="input-box">
 
-                    <textarea
-                        id="messageInput"
-                        rows="1"
-                        placeholder="Ask INGRES AI anything about groundwater..."
-                    ></textarea>
+                    <div class="input-main">
 
+                        <textarea
+                            id="messageInput"
+                            placeholder="Ask anything about INGRES..."
+                            rows="1"
+                        ></textarea>
 
-                    <div class="input-actions">
 
                         <button
-                            class="input-tool"
+                            class="voice-button"
+                            id="voiceButton"
                             onclick="startVoice()"
                             title="Voice input"
                         >
@@ -1025,10 +742,40 @@
                         <button
                             class="send-button"
                             onclick="sendMessage()"
-                            title="Send"
                         >
                             ↑
                         </button>
+
+                    </div>
+
+
+                    <div class="input-tools">
+
+                        <button onclick="startVoice()">
+                            🎙️ Voice
+                        </button>
+
+                        <button onclick="showGroundwaterMap()">
+                            🗺️ Map
+                        </button>
+
+                        <button onclick="showAnalytics()">
+                            📊 Graph
+                        </button>
+
+                        <button
+                            onclick="document.getElementById('fileInput').click()"
+                        >
+                            📎 Document
+                        </button>
+
+                        <input
+                            type="file"
+                            id="fileInput"
+                            hidden
+                            accept=".pdf,.doc,.docx,.txt,.csv"
+                            onchange="fileSelected(event)"
+                        />
 
                     </div>
 
@@ -1037,8 +784,9 @@
 
                 <div class="input-disclaimer">
 
-                    INGRES AI is a demonstration frontend.
-                    Responses shown here are simulated.
+                    INGRES AI may make mistakes.
+                    Verify important information with official
+                    groundwater resources.
 
                 </div>
 
@@ -1048,9 +796,13 @@
 
     </div>
 
-</div>
+</section>
 
 
+
+<!-- =====================================================
+     SCRIPT
+===================================================== -->
 
 <script src="app.js"></script>
 
